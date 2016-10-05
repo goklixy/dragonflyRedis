@@ -35,6 +35,13 @@ public class SensorService {
                 .getResultList();
     }
     
+    public Collection<Sensor> getLastSensorsByDeviceIdAndName(Long id, String name) {
+    	String sql = "Select c.* FROM Sensor c WHERE c.id IN (SELECT max(cc.id) FROM Sensor cc where cc.deviceid=" + id + " and name=" +"'" + name + "')";
+    	System.out.println("***: " + sql);
+    	return em.createNativeQuery(sql, Sensor.class)
+    			.getResultList();
+    }
+    
     @Transactional(readOnly = true)
     public  List<Sensor> getLastEvent() {
     	return em.createQuery("FROM Sensor c WHERE c.id IN (SELECT max(cc.id) FROM Sensor cc GROUP BY deviceid)").getResultList();

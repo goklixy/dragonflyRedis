@@ -23,6 +23,7 @@ public class SensorApiController {
     public static final String GET_SENSOR_BY_ID = SENSOR + "/{id}";
     public static final String GET_SENSOR_BY_DEVICE_ID = SENSOR + "/device/{id}";
 	private static final String LAST_SENSORS = SENSOR + "/last";
+	private static final String LAST_SENSOR_ID_NAME = SENSOR + "/last/{id}/{name}";
 
     @RequestMapping(value = LAST_SENSORS, method = RequestMethod.GET)
     public Collection<Sensor> getLastEvent() throws Exception {
@@ -32,7 +33,12 @@ public class SensorApiController {
 
     @RequestMapping(value = GET_SENSOR_BY_ID, method = RequestMethod.GET)
     public Sensor sensorById(@PathVariable  Long id) {
-        return this.sensorService.getSensorById(id);
+    	return this.sensorService.getSensorById(id);
+    }
+    
+    @RequestMapping(value = LAST_SENSOR_ID_NAME, method = RequestMethod.GET)
+    public Collection<Sensor> lastSensorByIdName(@PathVariable  Long id, @PathVariable String name) {
+        return sensorService.getLastSensorsByDeviceIdAndName(id, name);
     }
     
     @RequestMapping(value = GET_SENSOR_BY_DEVICE_ID , method = RequestMethod.GET)
